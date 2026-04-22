@@ -19,8 +19,7 @@ import supportRoutes from "./routes/supportRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 
 
-
-
+const PORT = process.env.PORT || 5000;
 
 
 
