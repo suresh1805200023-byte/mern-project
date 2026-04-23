@@ -22,20 +22,42 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 // DB
 import connectDb from "./config/db.js";
 
-// Load env FIRST
+// Load env
 dotenv.config();
 
-// Connect DB AFTER env loads
+// Connect DB
 connectDb();
 
 const app = express();
 
+
+// ✅ FINAL CORS CONFIG
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://mern-project-lrrn.vercel.app" // ✅ YOUR REAL FRONTEND URL
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log("Blocked by CORS:", origin);
+      callback(new Error("CORS not allowed"));
+    }
+  },
+  credentials: true
+}));
+
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Static files
 app.use("/uploads", express.static("uploads"));
+
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -54,14 +76,22 @@ app.use("/api/users", userRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// Root route (fixes "Not Found")
+
+// Root route
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// PORT (IMPORTANT for Render)
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+
+// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
