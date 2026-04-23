@@ -215,7 +215,7 @@ export default function Navbar() {
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-3 w-[340px] max-h-[420px] overflow-y-auto bg-white rounded-xl shadow-2xl z-50 border border-gray-100">
+              <div className="absolute right-0 mt-3 w-85 max-h-105 overflow-y-auto bg-white rounded-xl shadow-2xl z-50 border border-gray-100">
                 <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                   <p className="font-bold text-gray-900 text-sm">Notifications</p>
                   {unreadCount > 0 && (
