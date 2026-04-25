@@ -1,13 +1,14 @@
 import axios from "axios";
 
+// ✅ USE ENV VARIABLE (NOT localhost)
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// 🔐 ADD TOKEN TO EVERY REQUEST
+// 🔐 ADD TOKEN
 API.interceptors.request.use(
   (req) => {
     const token = localStorage.getItem("token");
@@ -16,26 +17,21 @@ API.interceptors.request.use(
       req.headers.Authorization = `Bearer ${token}`;
     }
 
-    // 🔍 DEBUG LOG (optional)
+    console.log("🌐 API:", import.meta.env.VITE_API_BASE_URL);
     console.log("👉 Request:", req.method.toUpperCase(), req.url);
-    console.log("🔐 Token:", token);
 
-    return req; // ✅ IMPORTANT (you already did this 👍)
+    return req;
   },
   (error) => Promise.reject(error)
 );
 
-// ❌ HANDLE GLOBAL ERRORS (VERY IMPORTANT 🔥)
+// ❌ HANDLE ERRORS
 API.interceptors.response.use(
   (res) => res,
   (error) => {
-    // 🔒 Auto logout if token expired
     if (error.response?.status === 401) {
-      console.log("⚠️ Token expired. Logging out...");
-
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-
       window.location.href = "/login";
     }
 
