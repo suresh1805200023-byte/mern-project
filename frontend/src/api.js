@@ -1,10 +1,12 @@
 import axios from "axios";
 
-const BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "https://mern-project-1v4z.onrender.com/api"; // fallback
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-console.log("🔥 FINAL BASE URL:", BASE_URL);
+console.log("🔥 BASE URL:", BASE_URL);
+
+if (!BASE_URL) {
+  throw new Error("❌ VITE_API_BASE_URL is missing in environment variables");
+}
 
 const API = axios.create({
   baseURL: BASE_URL,
