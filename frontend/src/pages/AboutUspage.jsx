@@ -2,7 +2,7 @@ import React from 'react';
 import { FaRocket, FaUsers, FaGlobe, FaLightbulb } from 'react-icons/fa';
 import heroImage from "../assets/hero.jpg"; 
 
-export default function AboutUs() {
+export default function AboutUspage() {
   const stats = [
     { label: "Active Students", value: "5,000+", icon: <FaUsers className="text-green-600" /> },
     { label: "Expert Mentors", value: "120+", icon: <FaLightbulb className="text-green-600" /> },
