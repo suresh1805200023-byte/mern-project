@@ -113,7 +113,7 @@ export default function Wishlist() {
               
                 <div className="overflow-hidden">
                   <img
-                    src={`http://localhost:5000/uploads/images/${course.image}`}
+                    src={`${import.meta.env.VITE_UPLOADS_IMAGES_URL}/${course.image}`}
                     alt={course.title}
                     className="w-full h-36 object-cover group-hover:scale-105 transition duration-300"
                   />

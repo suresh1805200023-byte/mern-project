@@ -38,7 +38,7 @@ export default function ProfileSection({ profile, fetchProfile }) {
       
       {profile?.profilePic && (
         <img
-          src={`http://localhost:5000/uploads/${profile.profilePic}`}
+          src={`${import.meta.env.VITE_UPLOADS_BASE_URL}/${profile.profilePic}`}
           className="w-24 h-24 rounded-full mb-3 object-cover"
         />
       )}

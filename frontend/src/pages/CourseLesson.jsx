@@ -93,7 +93,10 @@ export default function CourseLessons() {
                   onEnded={() => markAsComplete(activeLesson._id)}
                   className="w-full h-full object-cover"
                 >
-                  <source src={`http://localhost:5000/uploads/videos/${activeLesson.video}`} type="video/mp4" />
+                  <source 
+  src={`${import.meta.env.VITE_UPLOADS_VIDEOS_URL}/${activeLesson.video}`} 
+  type="video/mp4" 
+/>
                 </video>
               </div>
               <h1 className="text-3xl font-black text-slate-900 mb-4">{activeLesson.title}</h1>

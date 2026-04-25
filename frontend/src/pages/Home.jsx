@@ -105,7 +105,7 @@ export default function Home() {
 
           {course.image ? (
             <img
-              src={`http://localhost:5000/uploads/images/${course.image}`}
+              src={`${import.meta.env.VITE_UPLOADS_IMAGES_URL}/${course.image}`}
               alt={course.title}
               className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
             />

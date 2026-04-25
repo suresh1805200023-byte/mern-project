@@ -53,7 +53,7 @@ export default function TeacherDashboard() {
               <div className="relative">
                 {profile.profilePic ? (
                   <img
-                    src={`http://localhost:5000/uploads/${profile.profilePic}`}
+                    src={`${import.meta.env.VITE_UPLOADS_BASE_URL}/${profile.profilePic}`}
                     className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500"
                     alt="profile"
                   />

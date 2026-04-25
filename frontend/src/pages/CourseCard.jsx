@@ -88,7 +88,7 @@ export default function CourseCard({ course }) {
       
       <div className="relative overflow-hidden rounded-lg h-24 bg-gray-50">
         <img
-          src={`http://localhost:5000/uploads/images/${course.image}`}
+          src={`${import.meta.env.VITE_UPLOADS_IMAGES_URL}/${course.image}`}
           alt={course.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
         />

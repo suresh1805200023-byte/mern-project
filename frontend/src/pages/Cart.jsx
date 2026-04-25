@@ -110,7 +110,7 @@ export default function Cart() {
                     className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex gap-4"
                   >
                     <img
-                      src={`http://localhost:5000/uploads/images/${course.image}`}
+                       src={`${import.meta.env.VITE_UPLOADS_IMAGES_URL}/${course.image}`}
                       alt={course.title}
                       className="w-32 h-20 object-cover rounded-lg cursor-pointer"
                       onClick={() => navigate(`/course/${course._id}`)}

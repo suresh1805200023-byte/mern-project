@@ -49,7 +49,7 @@ export default function MyCourses() {
         <div key={item.course._id} className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
           {item.course?.image && (
             <img 
-              src={`http://localhost:5000/uploads/images/${item.course.image}`} 
+             src={`${import.meta.env.VITE_UPLOADS_IMAGES_URL}/${item.course.image}`}
               className="w-full h-40 object-cover rounded-2xl mb-4" 
               alt="course"
             />

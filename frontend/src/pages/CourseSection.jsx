@@ -239,7 +239,10 @@ export default function CoursesSection() {
                             <Plyr
                               source={{
                                 type: 'video',
-                                sources: [{ src: `http://localhost:5000/uploads/videos/${lesson.video}`, type: 'video/mp4' }]
+                                sources: [{
+  src: `${import.meta.env.VITE_UPLOADS_VIDEOS_URL}/${lesson.video}`,
+  type: 'video/mp4'
+}]
                               }}
                               options={{ controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'] }}
                             />
