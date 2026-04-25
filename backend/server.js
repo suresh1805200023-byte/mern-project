@@ -31,35 +31,36 @@ connectDb();
 const app = express();
 
 
-// ✅ FINAL CORS CONFIG
+// ✅ CORS CONFIG (FINAL)
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://mern-project-lrrn.vercel.app" // ✅ YOUR REAL FRONTEND URL
+  "http://localhost:5173", // local dev
+  process.env.CLIENT_URL  // production frontend (Vercel)
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps / Postman)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
+      return callback(null, true);
     } else {
-      console.log("Blocked by CORS:", origin);
-      callback(new Error("CORS not allowed"));
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("CORS not allowed"));
     }
   },
-  credentials: true
+  credentials: true,
 }));
 
 
 // Middleware
 app.use(express.json());
 
-// Static files
+// Static files (images, uploads)
 app.use("/uploads", express.static("uploads"));
 
 
-// Routes
+// ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/application", application);
 app.use("/api/courses", courseRoutes);
@@ -89,9 +90,18 @@ app.use((req, res) => {
 });
 
 
+// Global error handler (VERY IMPORTANT)
+app.use((err, req, res, next) => {
+  console.error("🔥 ERROR:", err.message);
+  res.status(500).json({
+    message: err.message || "Internal Server Error",
+  });
+});
+
+
 // Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
