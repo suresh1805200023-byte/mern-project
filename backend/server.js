@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
 
 // Routes
 import application from "./routes/application.js";
@@ -31,36 +32,48 @@ connectDb();
 const app = express();
 
 
+// =======================
 // ✅ CORS CONFIG (FINAL)
+// =======================
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  process.env.CLIENT_URL  // production frontend (Vercel)
+  "http://localhost:5173",
+  process.env.CLIENT_URL, // from Render env
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps / Postman)
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
+      // allow localhost + env + all vercel domains
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.includes("vercel.app") ||
+        origin.includes("onrender.com")
+      ) {
+        return callback(null, true);
+      }
+
       console.log("❌ Blocked by CORS:", origin);
       return callback(new Error("CORS not allowed"));
-    }
-  },
-  credentials: true,
-}));
+    },
+    credentials: true,
+  })
+);
 
 
-// Middleware
+// =======================
+// ✅ MIDDLEWARE
+// =======================
 app.use(express.json());
 
-// Static files (images, uploads)
+// Static files
 app.use("/uploads", express.static("uploads"));
 
 
-// ✅ Routes
+// =======================
+// ✅ API ROUTES
+// =======================
 app.use("/api/auth", authRoutes);
 app.use("/api/application", application);
 app.use("/api/courses", courseRoutes);
@@ -78,19 +91,25 @@ app.use("/api/support", supportRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 
-// Root route
+// =======================
+// ✅ ROOT ROUTE
+// =======================
 app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
+  res.send("🚀 Backend is running successfully");
 });
 
 
-// 404 handler
+// =======================
+// ✅ 404 HANDLER
+// =======================
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
 
-// Global error handler (VERY IMPORTANT)
+// =======================
+// ✅ GLOBAL ERROR HANDLER
+// =======================
 app.use((err, req, res, next) => {
   console.error("🔥 ERROR:", err.message);
   res.status(500).json({
@@ -99,7 +118,9 @@ app.use((err, req, res, next) => {
 });
 
 
-// Start server
+// =======================
+// ✅ START SERVER
+// =======================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
