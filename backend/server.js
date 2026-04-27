@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import path from "path";
 
 // Routes
 import application from "./routes/application.js";
@@ -23,56 +22,56 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 // DB
 import connectDb from "./config/db.js";
 
-// Load env
+// =======================
+// ✅ LOAD ENV
+// =======================
 dotenv.config();
 
-// Connect DB
+// =======================
+// ✅ CONNECT DATABASE
+// =======================
 connectDb();
 
+// =======================
+// ✅ INIT APP
+// =======================
 const app = express();
 
-
 // =======================
-// ✅ CORS CONFIG (FINAL)
+// ✅ CORS CONFIG (SAFE)
 // =======================
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.CLIENT_URL, // from Render env
+  process.env.CLIENT_URL, // set in Render
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Allow requests without origin (Postman, mobile apps)
       if (!origin) return callback(null, true);
 
-      // allow localhost + env + all vercel domains
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.includes("vercel.app") ||
-        origin.includes("onrender.com")
-      ) {
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
       console.log("❌ Blocked by CORS:", origin);
-      return callback(new Error("CORS not allowed"));
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
 );
-
 
 // =======================
 // ✅ MIDDLEWARE
 // =======================
 app.use(express.json());
 
-// Static files
+// Static folder
 app.use("/uploads", express.static("uploads"));
 
-
 // =======================
-// ✅ API ROUTES
+// ✅ ROUTES
 // =======================
 app.use("/api/auth", authRoutes);
 app.use("/api/application", application);
@@ -90,14 +89,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-
 // =======================
 // ✅ ROOT ROUTE
 // =======================
 app.get("/", (req, res) => {
   res.send("🚀 Backend is running successfully");
 });
-
 
 // =======================
 // ✅ 404 HANDLER
@@ -106,9 +103,8 @@ app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-
 // =======================
-// ✅ GLOBAL ERROR HANDLER
+// ✅ ERROR HANDLER
 // =======================
 app.use((err, req, res, next) => {
   console.error("🔥 ERROR:", err.message);
@@ -116,7 +112,6 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error",
   });
 });
-
 
 // =======================
 // ✅ START SERVER
