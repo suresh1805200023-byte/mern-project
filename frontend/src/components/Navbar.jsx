@@ -169,12 +169,7 @@ export default function Navbar() {
 
        
         <div className="flex items-center gap-5">
-          <Link 
-            to="/about" 
-            className="text-gray-700 font-medium hover:text-green-600 transition-colors"
-          >
-            About
-          </Link>
+         
           <Link 
             to="/contact" 
             className="text-gray-700 font-medium hover:text-green-600 transition-colors"

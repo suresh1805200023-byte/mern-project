@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Settings from "./pages/Settings";
-import AboutUspaage from "./pages/AboutUspage"; // ✅ FIXED
+
 
 import ContactUs from "./pages/ContactUs";
 import Footer from "./components/Footer";
@@ -37,7 +37,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/apply-teacher" element={<BecomeTeacher />} />
-            <Route path="/about" element={<AboutUspage />} />
+            
             <Route path="/teacher" element={<TeacherDashboard />} />
             <Route path="/student" element={<StudentDashboard />} />
             <Route path="/wishlist" element={<Wishlist />} />
