@@ -40,30 +40,7 @@ const allowedOrigins = [
 // =======================
 // ✅ DYNAMIC CORS CONFIG (Universal)
 // =======================
-app.use(cors({
-  origin: function (origin, callback) {
-    // 1. Allow requests with no origin (Postman, mobile, etc.)
-    if (!origin) return callback(null, true);
 
-    // 2. Regex to allow:
-    //    - Any localhost (http://localhost:XXXX)
-    //    - Any local IP (http://127.0.0.1:XXXX)
-    //    - Any Render deployment (ending in .onrender.com)
-    const isLocalhost = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
-    const isRender = origin.endsWith(".onrender.com");
-
-    if (isLocalhost || isRender) {
-      callback(null, true);
-    } else {
-      // For development: if it's still blocked, log it so you can see why
-      console.log("❌ CORS Blocked Origin:", origin);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
-}));
 
 // =======================
 // ✅ MIDDLEWARE
@@ -98,6 +75,9 @@ app.use("/api/notifications", notificationRoutes);
 app.get("/", (req, res) => {
   res.send("🚀 Backend is running successfully");
 });
+
+
+app.use(cors({origin:'https://mern-project-1-a5fu.onrender.com'}));
 
 // =======================
 // ✅ 404 HANDLER
