@@ -23,42 +23,40 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import connectDb from "./config/db.js";
 
 // =======================
-// ✅ LOAD ENV
+// ✅ LOAD ENV & CONNECT DB
 // =======================
 dotenv.config();
-
-// =======================
-// ✅ CONNECT DATABASE
-// =======================
 connectDb();
 
-// =======================
-// ✅ INIT APP
-// =======================
 const app = express();
 
 // =======================
-// ✅ CORS CONFIG (SAFE)
+// ✅ ROBUST CORS CONFIG
 // =======================
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.CLIENT_URL, // set in Render
-];
+  "https://skillhubfrontend.onrender.com",
+  "https://mern-project-2em3.onrender.com", // Added the one from your logs
+  process.env.CLIENT_URL,
+].filter(Boolean); // Removes undefined values if CLIENT_URL isn't set
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without origin (Postman, mobile apps)
+      // Allow requests with no origin (like mobile apps or Postman)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      // Check if the origin is in our allowed list
+      if (allowedOrigins.indexOf(origin) !== -1) {
         return callback(null, true);
+      } else {
+        console.log("❌ Blocked by CORS Origin:", origin);
+        return callback(new Error("Not allowed by CORS"));
       }
-
-      console.log("❌ Blocked by CORS:", origin);
-      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   })
 );
 
@@ -66,8 +64,6 @@ app.use(
 // ✅ MIDDLEWARE
 // =======================
 app.use(express.json());
-
-// Static folder
 app.use("/uploads", express.static("uploads"));
 
 // =======================
@@ -107,7 +103,12 @@ app.use((req, res) => {
 // ✅ ERROR HANDLER
 // =======================
 app.use((err, req, res, next) => {
-  console.error("🔥 ERROR:", err.message);
+  // Catch CORS errors specifically
+  if (err.message === "Not allowed by CORS") {
+    return res.status(403).json({ message: "CORS Error: Origin not allowed" });
+  }
+  
+  console.error("🔥 ERROR:", err.stack);
   res.status(500).json({
     message: err.message || "Internal Server Error",
   });
@@ -117,7 +118,6 @@ app.use((err, req, res, next) => {
 // ✅ START SERVER
 // =======================
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
