@@ -166,7 +166,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16 relative z-10">
           <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-5xl lg:text-7xl text-gray-900 leading-[1.1] mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl text-gray-900 leading-[1.1] mb-6">
               Unlock Your <br />
               <span className="text-transparent bg-clip-text bg-linear-to-r from-green-600 to-emerald-400">
                 Future Potential
@@ -203,9 +203,9 @@ export default function Home() {
         
        
         <section>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">Trending Right Now</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Trending Right Now</h2>
               <p className="text-gray-500">The most popular courses this week</p>
             </div>
             <button 
@@ -230,7 +230,7 @@ export default function Home() {
         <section className="bg-gray-50 rounded-3xl p-10 border border-gray-100 mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-2 h-8 bg-green-500 rounded-full"></div>
-            <h2 className="text-3xl font-bold text-gray-900">Featured Excellence</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Featured Excellence</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredCourses.length > 0 ? (

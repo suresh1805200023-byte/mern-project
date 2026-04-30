@@ -38,11 +38,11 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans antialiased">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-slate-50 font-sans antialiased">
       
     
-      <div className="w-72 bg-slate-900 text-white flex flex-col shadow-2xl">
-        <div className="p-8">
+      <div className="w-full lg:w-72 bg-slate-900 text-white flex flex-col shadow-2xl">
+        <div className="p-5 md:p-8">
           <h2 className="text-2xl font-black tracking-tighter text-emerald-400 mb-8">
             UpSkillHub <span className="text-white font-light text-sm uppercase tracking-widest block">Instructor</span>
           </h2>
@@ -71,7 +71,7 @@ export default function TeacherDashboard() {
             </div>
           )}
 
-          <nav className="space-y-1">
+          <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2 lg:space-y-1">
             {[
               { id: "analytics", label: "Dashboard",  },
               { id: "courses", label: "My Courses",  },
@@ -95,17 +95,17 @@ export default function TeacherDashboard() {
           </nav>
         </div>
         
-        <div className="mt-auto p-8 border-t border-slate-800">
+        <div className="mt-auto p-5 md:p-8 border-t border-slate-800">
            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">v2.4 Stable</p>
         </div>
       </div>
 
       
-      <div className="flex-1 overflow-y-auto px-12 py-10">
-        <header className="flex justify-between items-end mb-12">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10">
+        <header className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8 lg:mb-12">
           <div>
             <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-1">Morning, Instructor</p>
-            <h1 className="text-4xl font-black text-slate-800">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800">
               Welcome, {user?.name.split(" ")[0]} 👋
             </h1>
           </div>
@@ -123,7 +123,7 @@ export default function TeacherDashboard() {
                  {[1,2,3,4].map(i => <div key={i} className="h-32 flex-1 bg-slate-200 animate-pulse rounded-3xl"></div>)}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-10">
                 <StatCard label="Live Courses" value={stats.totalCourses} color="text-slate-800" />
                 <StatCard label="Total Students" value={stats.totalStudents} color="text-blue-600" />
                 <StatCard label="Avg Rating" value={`⭐ ${stats.avgRating}`} color="text-amber-500" />
@@ -132,7 +132,7 @@ export default function TeacherDashboard() {
             )}
             
            
-            <div className="bg-white p-8 rounded-4xl shadow-sm border border-slate-100 min-h-75 flex items-center justify-center border-dashed">
+            <div className="bg-white p-5 md:p-8 rounded-4xl shadow-sm border border-slate-100 min-h-75 flex items-center justify-center border-dashed">
                <p className="text-slate-400 font-medium">Sales Charting Component Coming Soon</p>
             </div>
           </div>

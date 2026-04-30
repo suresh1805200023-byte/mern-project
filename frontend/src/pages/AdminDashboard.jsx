@@ -177,16 +177,16 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans antialiased">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-slate-50 font-sans antialiased">
       
       {/* SIDEBAR */}
-      <div className="w-72 bg-slate-900 text-white p-6 shadow-2xl z-20">
+      <div className="w-full lg:w-72 bg-slate-900 text-white p-4 sm:p-6 shadow-2xl z-20">
         <div className="mb-12 px-4">
           <h2 className="text-2xl font-black tracking-tighter text-emerald-400">DASHBOARD</h2>
           <p className="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Admin Management</p>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2">
           {["analytics", "applications", "categories", "users", "support", "notifications"].map((item) => (
             <button
               key={item}
@@ -204,23 +204,23 @@ export default function AdminDashboard() {
       </div>
 
    
-      <div className="flex-1 p-10 overflow-y-auto">
+      <div className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto">
         
        
         {active === "analytics" && (
           <div className="animate-in fade-in duration-500 space-y-12">
             <div>
-              <h1 className="text-3xl font-black text-slate-800 mb-8">Platform Overview</h1>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-800 mb-6 sm:mb-8">Platform Overview</h1>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
+                <div className="bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-slate-100">
                   <p className="text-slate-400 font-bold text-xs uppercase mb-1">Net Revenue</p>
                   <p className="text-4xl font-black text-emerald-600">₹{revenue.toLocaleString()}</p>
                 </div>
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                <div className="bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-slate-100">
                   <p className="text-slate-400 font-bold text-xs uppercase mb-1">Total Sales</p>
                   <p className="text-4xl font-black text-slate-800">₹{sales.toLocaleString()}</p>
                 </div>
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                <div className="bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-slate-100">
                   <p className="text-slate-400 font-bold text-xs uppercase mb-1">Verified Teachers</p>
                   <p className="text-4xl font-black text-blue-600">{approvedTeachers}</p>
                 </div>
@@ -228,9 +228,9 @@ export default function AdminDashboard() {
             </div>
 
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
             
-              <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
+              <div className="bg-white rounded-[2.5rem] p-5 sm:p-8 shadow-sm border border-slate-100">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-3 bg-amber-50 rounded-2xl text-amber-500">
                     <Trophy size={22} />
@@ -259,7 +259,7 @@ export default function AdminDashboard() {
               </div>
 
           
-              <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
+              <div className="bg-white rounded-[2.5rem] p-5 sm:p-8 shadow-sm border border-slate-100">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-3 bg-blue-50 rounded-2xl text-blue-500">
                     <BookOpen size={22} />
@@ -287,7 +287,7 @@ export default function AdminDashboard() {
 
    
         {active === "users" && (
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-slate-50 border-b border-slate-100">
                 <tr>
@@ -335,7 +335,7 @@ export default function AdminDashboard() {
             <h1 className="text-3xl font-black text-slate-800 mb-8">Teacher Applications</h1>
             <div className="grid gap-4">
               {apps.map((app) => (
-                <div key={app._id} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center transition-all hover:shadow-md">
+                <div key={app._id} className="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4 transition-all hover:shadow-md">
                   <div>
                     <h3 className="font-bold text-slate-800 text-lg">{app.user?.name}</h3>
                     <p className="text-slate-400 text-sm">{app.user?.email}</p>
@@ -364,7 +364,7 @@ export default function AdminDashboard() {
         {active === "categories" && (
           <div className="max-w-2xl">
             <h1 className="text-3xl font-black text-slate-800 mb-8">Manage Categories</h1>
-            <div className="flex gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
               <input
                 type="text"
                 value={newCategory}
@@ -376,7 +376,7 @@ export default function AdminDashboard() {
             </div>
             <div className="space-y-3">
               {categories.map((cat) => (
-                <div key={cat._id} className="bg-white p-5 rounded-2xl shadow-sm flex justify-between items-center border border-slate-100">
+                <div key={cat._id} className="bg-white p-5 rounded-2xl shadow-sm flex justify-between items-center border border-slate-100 gap-3">
                   <span className="font-bold text-slate-700">{cat.name}</span>
                   <button onClick={() => deleteCategory(cat._id)} className="text-red-400 hover:text-red-600 transition-colors">
                     <Trash2 size={18} />
@@ -481,13 +481,13 @@ export default function AdminDashboard() {
         {selectedApp && (
           <div className="fixed inset-0 z-50 flex justify-end">
             <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setSelectedApp(null)} />
-            <div className="relative w-full max-w-xl bg-white h-full shadow-2xl p-10 overflow-y-auto animate-in slide-in-from-right duration-300">
+            <div className="relative w-full max-w-xl bg-white h-full shadow-2xl p-5 sm:p-10 overflow-y-auto animate-in slide-in-from-right duration-300">
               <button onClick={() => setSelectedApp(null)} className="absolute top-8 right-8 text-slate-400 hover:text-slate-900">
                 <X size={24} />
               </button>
               
               <div className="mb-10">
-                <h2 className="text-3xl font-black text-slate-900">Review Application</h2>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Review Application</h2>
                 <p className="text-slate-400 font-medium">Applied on {new Date(selectedApp.createdAt).toLocaleDateString()}</p>
               </div>
 
@@ -502,7 +502,7 @@ export default function AdminDashboard() {
                   </a>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {[
                     { label: 'Website', url: selectedApp.website },
                     { label: 'LinkedIn', url: selectedApp.linkedin },

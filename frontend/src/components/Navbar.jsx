@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import API from "../api";
-import { FaEnvelope, FaHeart, FaLightbulb, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaBars, FaEnvelope, FaHeart, FaLightbulb, FaSearch, FaShoppingCart, FaTimes } from "react-icons/fa";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ export default function Navbar() {
   const [showExplore, setShowExplore] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [search, setSearch] = useState("");
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
@@ -121,10 +122,10 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex justify-between items-center px-10 py-4 shadow border-b bg-white sticky top-0 z-50">
+    <div className="px-4 md:px-10 py-4 shadow border-b bg-white sticky top-0 z-50">
 
-     
-      <div className="flex items-center gap-6">
+      <div className="flex justify-between items-center gap-3">
+        <div className="flex items-center gap-3 md:gap-6">
 
       
         <Link to="/" className="flex items-center gap-2 mr-2">
@@ -135,7 +136,7 @@ export default function Navbar() {
         </Link>
 
        
-        <div className="relative" ref={exploreRef}>
+        <div className="relative hidden md:block" ref={exploreRef}>
           <button
             onClick={() => setShowExplore(!showExplore)}
             className="text-gray-700 font-medium hover:text-green-600 transition-colors"
@@ -168,7 +169,7 @@ export default function Navbar() {
         </div>
 
        
-        <div className="flex items-center gap-5">
+        <div className="hidden md:flex items-center gap-5">
          
           <Link 
             to="/contact" 
@@ -179,7 +180,7 @@ export default function Navbar() {
         </div>
 
         
-        <div className="flex items-center border rounded-full bg-gray-50 px-4 py-1.5 shadow-sm w-64 focus-within:border-green-400 focus-within:bg-white transition-all">
+        <div className="hidden md:flex items-center border rounded-full bg-gray-50 px-4 py-1.5 shadow-sm w-64 focus-within:border-green-400 focus-within:bg-white transition-all">
           <FaSearch className="text-gray-400 text-sm mr-2" />
           <input
             type="text"
@@ -190,12 +191,11 @@ export default function Navbar() {
             onKeyDown={handleSearch}
           />
         </div>
-      </div>
+        </div>
 
-      
-      <div className="flex items-center gap-5 text-gray-800">
+        <div className="flex items-center gap-2 md:gap-5 text-gray-800">
         {user && (
-          <div className="relative" ref={notificationRef}>
+          <div className="relative hidden md:block" ref={notificationRef}>
             <button
               onClick={() => setShowNotifications((prev) => !prev)}
               className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -283,19 +283,19 @@ export default function Navbar() {
         {user && user.role !== "teacher" && user.role !== "admin" && (
           <button
             onClick={() => navigate("/apply-teacher")}
-            className="bg-green-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-green-700 transition-all shadow-md shadow-green-100"
+            className="hidden md:inline-flex bg-green-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-green-700 transition-all shadow-md shadow-green-100"
           >
             Become a Teacher
           </button>
         )}
 
         {!user ? (
-          <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <Link to="/login" className="text-gray-700 font-medium hover:text-green-600">Login</Link>
             <Link to="/register" className="bg-black text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-800 transition-all">Sign Up</Link>
           </div>
         ) : (
-          <div className="relative" ref={userRef}>
+          <div className="relative hidden md:block" ref={userRef}>
             <div
               onClick={() => setShowUserMenu(!showUserMenu)}
               className="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center cursor-pointer font-bold shadow-md hover:scale-105 transition-transform"
@@ -317,7 +317,94 @@ export default function Navbar() {
             )}
           </div>
         )}
+          <button
+            onClick={() => setShowMobileMenu((prev) => !prev)}
+            className="md:hidden p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {showMobileMenu ? <FaTimes className="text-lg" /> : <FaBars className="text-lg" />}
+          </button>
+        </div>
       </div>
+
+      {showMobileMenu && (
+        <div className="md:hidden mt-4 border-t pt-4 space-y-4">
+          <div className="flex items-center border rounded-full bg-gray-50 px-4 py-2 shadow-sm focus-within:border-green-400 focus-within:bg-white transition-all">
+            <FaSearch className="text-gray-400 text-sm mr-2" />
+            <input
+              type="text"
+              placeholder="Search courses..."
+              className="outline-none text-sm w-full bg-transparent"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => setShowExplore((prev) => !prev)}
+              className="text-left text-gray-700 font-medium px-1"
+            >
+              Explore {showExplore ? "▴" : "▾"}
+            </button>
+            {showExplore && (
+              <div className="border rounded-xl overflow-hidden">
+                <button
+                  onClick={() => { navigate("/courses"); setShowMobileMenu(false); setShowExplore(false); }}
+                  className="w-full text-left px-4 py-2.5 border-b text-sm"
+                >
+                  All Courses
+                </button>
+                {categories.map((cat) => (
+                  <button
+                    key={cat._id}
+                    onClick={() => {
+                      navigate(`/courses?category=${cat._id}`);
+                      setShowMobileMenu(false);
+                      setShowExplore(false);
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-sm hover:bg-green-50"
+                  >
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            <Link to="/contact" onClick={() => setShowMobileMenu(false)} className="text-gray-700 font-medium px-1">
+              Contact
+            </Link>
+            {user && (
+              <>
+                <Link to={user.role === "admin" ? "/admin" : user.role === "teacher" ? "/teacher" : "/student"} onClick={() => setShowMobileMenu(false)} className="text-gray-700 font-medium px-1">
+                  Dashboard
+                </Link>
+                <Link to="/settings" onClick={() => setShowMobileMenu(false)} className="text-gray-700 font-medium px-1">
+                  Settings
+                </Link>
+                <Link to="/help" onClick={() => setShowMobileMenu(false)} className="text-gray-700 font-medium px-1">
+                  Help Center
+                </Link>
+              </>
+            )}
+          </div>
+
+          {!user ? (
+            <div className="grid grid-cols-2 gap-2">
+              <Link to="/login" onClick={() => setShowMobileMenu(false)} className="text-center text-gray-700 font-medium border rounded-lg py-2">
+                Login
+              </Link>
+              <Link to="/register" onClick={() => setShowMobileMenu(false)} className="text-center bg-black text-white rounded-lg py-2 text-sm font-bold">
+                Sign Up
+              </Link>
+            </div>
+          ) : (
+            <button onClick={logout} className="w-full bg-red-50 text-red-600 rounded-lg py-2 text-sm font-semibold">
+              Logout
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

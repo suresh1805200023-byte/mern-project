@@ -7,13 +7,13 @@ export default function StudentDashboard() {
   const [active, setActive] = useState("courses");
 
   return (
-    <div className="flex h-[calc(100vh-120px)]">
+    <div className="flex flex-col md:flex-row h-auto md:h-[calc(100vh-120px)] min-h-[calc(100vh-120px)]">
 
       
-      <div className="w-64 bg-gray-900 text-white p-5">
+      <div className="w-full md:w-64 bg-gray-900 text-white p-4 md:p-5">
         <h2 className="text-xl font-bold mb-6">Student Panel</h2>
 
-        <ul className="space-y-3">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-2 md:space-y-3">
 
           
           <li>
@@ -58,7 +58,7 @@ export default function StudentDashboard() {
       </div>
 
   
-      <div className="flex-1 p-6 bg-gray-100 overflow-y-auto">
+      <div className="flex-1 p-4 md:p-6 bg-gray-100 overflow-y-auto">
 
         {active === "courses" && <MyCourses />}
 
