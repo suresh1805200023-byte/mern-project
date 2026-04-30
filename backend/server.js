@@ -31,44 +31,46 @@ connectDb();
 const app = express();
 
 // =======================
-// ✅ ROBUST CORS CONFIG
+// ✅ DYNAMIC CORS CONFIG
 // =======================
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://skillhub1front.onrender.com",
   "https://skillhubfrontend.onrender.com",
-  "https://mern-project-2em3.onrender.com", // Added the one from your logs
-  process.env.CLIENT_URL,
-].filter(Boolean); // Removes undefined values if CLIENT_URL isn't set
+  "https://mern-project-2em3.onrender.com"
+];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or Postman)
-      if (!origin) return callback(null, true);
+app.use(cors({
+  origin: function (origin, callback) {
+    // 1. Allow requests with no origin (like Postman or mobile apps)
+    if (!origin) return callback(null, true);
 
-      // Check if the origin is in our allowed list
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        return callback(null, true);
-      } else {
-        console.log("❌ Blocked by CORS Origin:", origin);
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
-  })
-);
+    // 2. Allow if origin is in list OR if it ends with .onrender.com
+    const isAllowed = allowedOrigins.includes(origin) || origin.endsWith(".onrender.com");
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log("❌ Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
+}));
 
 // =======================
 // ✅ MIDDLEWARE
 // =======================
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Added for better form handling
 app.use("/uploads", express.static("uploads"));
 
 // =======================
 // ✅ ROUTES
 // =======================
+// Ensure these routes match exactly what your frontend is calling
 app.use("/api/auth", authRoutes);
 app.use("/api/application", application);
 app.use("/api/courses", courseRoutes);
@@ -86,7 +88,7 @@ app.use("/api/support", supportRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 // =======================
-// ✅ ROOT ROUTE
+// ✅ ROOT ROUTE (To test if backend is alive)
 // =======================
 app.get("/", (req, res) => {
   res.send("🚀 Backend is running successfully");
@@ -96,19 +98,19 @@ app.get("/", (req, res) => {
 // ✅ 404 HANDLER
 // =======================
 app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
+  console.log(`⚠️ 404 - Route Not Found: ${req.method} ${req.url}`);
+  res.status(404).json({ message: `Route ${req.url} not found on this server.` });
 });
 
 // =======================
 // ✅ ERROR HANDLER
 // =======================
 app.use((err, req, res, next) => {
-  // Catch CORS errors specifically
   if (err.message === "Not allowed by CORS") {
     return res.status(403).json({ message: "CORS Error: Origin not allowed" });
   }
   
-  console.error("🔥 ERROR:", err.stack);
+  console.error("🔥 Server Error:", err.stack);
   res.status(500).json({
     message: err.message || "Internal Server Error",
   });
