@@ -28,14 +28,14 @@ import connectDb from "./config/db.js";
 dotenv.config();
 connectDb();
 
+
 const app = express();
+app.use(cors({origin:'https://mern-project-1-a5fu.onrender.com'}));
 
 // =======================
 // ✅ DYNAMIC CORS CONFIG
 // =======================
-const allowedOrigins = [
-  
-];
+
 
 // =======================
 // ✅ DYNAMIC CORS CONFIG (Universal)
@@ -77,7 +77,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.use(cors({origin:'https://mern-project-1-a5fu.onrender.com'}));
+
 
 // =======================
 // ✅ 404 HANDLER
