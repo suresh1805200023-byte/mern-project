@@ -22,37 +22,27 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 // DB
 import connectDb from "./config/db.js";
 
-// =======================
 // ✅ LOAD ENV & CONNECT DB
-// =======================
 dotenv.config();
 connectDb();
 
-
 const app = express();
-app.use(cors({origin:'https://mern-project-1-a5fu.onrender.com'}));
 
-// =======================
-// ✅ DYNAMIC CORS CONFIG
-// =======================
+// ✅ THE "FIX EVERYTHING" CORS CONFIG
+// This allows all origins, including localhost and any deployed URL.
+app.use(cors({
+  origin: true, 
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
+}));
 
-
-// =======================
-// ✅ DYNAMIC CORS CONFIG (Universal)
-// =======================
-
-
-// =======================
 // ✅ MIDDLEWARE
-// =======================
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Added for better form handling
+app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
-// =======================
 // ✅ ROUTES
-// =======================
-// Ensure these routes match exactly what your frontend is calling
 app.use("/api/auth", authRoutes);
 app.use("/api/application", application);
 app.use("/api/courses", courseRoutes);
@@ -69,41 +59,23 @@ app.use("/api/users", userRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// =======================
-// ✅ ROOT ROUTE (To test if backend is alive)
-// =======================
+// ✅ ROOT ROUTE
 app.get("/", (req, res) => {
   res.send("🚀 Backend is running successfully");
 });
 
-
-
-
-// =======================
 // ✅ 404 HANDLER
-// =======================
 app.use((req, res) => {
-  console.log(`⚠️ 404 - Route Not Found: ${req.method} ${req.url}`);
-  res.status(404).json({ message: `Route ${req.url} not found on this server.` });
+  res.status(404).json({ message: `Route ${req.url} not found.` });
 });
 
-// =======================
 // ✅ ERROR HANDLER
-// =======================
 app.use((err, req, res, next) => {
-  if (err.message === "Not allowed by CORS") {
-    return res.status(403).json({ message: "CORS Error: Origin not allowed" });
-  }
-  
   console.error("🔥 Server Error:", err.stack);
-  res.status(500).json({
-    message: err.message || "Internal Server Error",
-  });
+  res.status(500).json({ message: err.message || "Internal Server Error" });
 });
 
-// =======================
 // ✅ START SERVER
-// =======================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
