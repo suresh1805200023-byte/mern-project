@@ -34,24 +34,29 @@ const app = express();
 // ✅ DYNAMIC CORS CONFIG
 // =======================
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://skillhub1front.onrender.com",
-  "https://skillhubfrontend.onrender.com",
-  "https://mern-project-2em3.onrender.com"
+  
 ];
 
+// =======================
+// ✅ DYNAMIC CORS CONFIG (Universal)
+// =======================
 app.use(cors({
   origin: function (origin, callback) {
-    // 1. Allow requests with no origin (like Postman or mobile apps)
+    // 1. Allow requests with no origin (Postman, mobile, etc.)
     if (!origin) return callback(null, true);
 
-    // 2. Allow if origin is in list OR if it ends with .onrender.com
-    const isAllowed = allowedOrigins.includes(origin) || origin.endsWith(".onrender.com");
+    // 2. Regex to allow:
+    //    - Any localhost (http://localhost:XXXX)
+    //    - Any local IP (http://127.0.0.1:XXXX)
+    //    - Any Render deployment (ending in .onrender.com)
+    const isLocalhost = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+    const isRender = origin.endsWith(".onrender.com");
 
-    if (isAllowed) {
+    if (isLocalhost || isRender) {
       callback(null, true);
     } else {
-      console.log("❌ Blocked by CORS:", origin);
+      // For development: if it's still blocked, log it so you can see why
+      console.log("❌ CORS Blocked Origin:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
