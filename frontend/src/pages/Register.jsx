@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom"; 
 import API from "../api";
-import { FaUser, FaLock, FaEnvelope, FaIdCard, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaLock, FaEnvelope, FaIdCard, FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: "student" // Preserved default state
+    role: "student"
   });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,19 +30,19 @@ export default function Register() {
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-tr from-[#e6f9f0] via-[#c2f0db] to-[#99e6c4] px-4 py-12 font-sans">
       
       {/* Centered White Card Container */}
-      <div className="bg-white w-full max-w-[480px] rounded-2xl shadow-xl p-8 md:p-12">
+      <div className="bg-white w-full max-w-[480px] rounded-2xl shadow-2xl p-8 md:p-12 transition-transform duration-300">
         
         {/* Title Heading */}
         <h2 className="text-3xl font-extrabold text-green-800 text-center mb-10 tracking-tight">
           Register
         </h2>
 
-        <form onSubmit={handleRegister} className="space-y-6">
+        <form onSubmit={handleRegister} className="space-y-8">
           
           {/* Full Name Input Section */}
           <div className="relative border-b-2 border-gray-200 focus-within:border-green-500 transition-colors py-1">
             <label className="block text-xs font-semibold text-green-700 uppercase tracking-wider mb-1">
-              Full Name
+              Username
             </label>
             <div className="flex items-center">
               <FaIdCard className="text-gray-400 mr-3 text-sm flex-shrink-0" />
@@ -57,10 +57,10 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Email/Username Input Section */}
+          {/* Email Address Input Section */}
           <div className="relative border-b-2 border-gray-200 focus-within:border-green-500 transition-colors py-1">
             <label className="block text-xs font-semibold text-green-700 uppercase tracking-wider mb-1">
-              Email Address
+              Email
             </label>
             <div className="flex items-center">
               <FaEnvelope className="text-gray-400 mr-3 text-sm flex-shrink-0" />
@@ -100,11 +100,8 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Hidden/Preserved Role Input Option */}
-          {/* If you ever want to let them select a role on the UI, you can uncomment a select box here */}
-
           {/* Green Gradient Action Register Button */}
-          <div className="pt-4">
+          <div className="pt-2">
             <button
               type="submit"
               className="w-full h-12 rounded-full font-bold text-white tracking-wide shadow-md shadow-green-100 bg-gradient-to-r from-[#5cd699] via-[#2eb872] to-[#1f7a4b] hover:opacity-95 transform active:scale-[0.99] transition-all text-sm uppercase"
@@ -114,10 +111,10 @@ export default function Register() {
           </div>
         </form>
 
-        {/* Footer Link pointing back to Login */}
-        <div className="mt-16 text-center space-y-3">
+        {/* Footer/Navigation Sign up Section matching Login component architecture */}
+        <div className="mt-20 text-center space-y-3">
           <p className="text-xs text-gray-400 tracking-wide">
-            Already have an account?
+            Or Sign Up Using
           </p>
           <div>
             <Link 
