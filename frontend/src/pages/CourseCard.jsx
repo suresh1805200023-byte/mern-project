@@ -97,7 +97,7 @@ export default function CourseCard({ course }) {
 
      
       <div className="mt-3 grow">
-        <h3 className="text-[11px] font-bold text-gray-800 leading-[1.3] line-clamp-2 h-7 group-hover:text-indigo-600 transition-colors">
+        <h3 className="text-[11px]  text-gray-800 leading-[1.3] line-clamp-2 h-7 group-hover:text-indigo-600 transition-colors">
           {course.title}
         </h3>
         
@@ -108,7 +108,7 @@ export default function CourseCard({ course }) {
       
         <div className="mt-2 flex items-baseline gap-0.5">
           <span className="text-[10px] font-sans text-gray-600 font-medium">₹</span>
-          <span className="text-[14px] font-mono font-bold text-gray-900 tracking-tight">
+          <span className="text-[14px] font-mono  text-gray-900 tracking-tight">
             {course.price.toLocaleString("en-IN")}
           </span>
         </div>
