@@ -103,7 +103,7 @@ export default function Login() {
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full h-12 rounded-full font-bold text-white tracking-wide shadow-md shadow-purple-200 bg-gradient-to-r from-[#4ae2e2] via-[#9476fa] to-[#f43cda] hover:opacity-95 transform active:scale-[0.99] transition-all text-sm uppercase"
+              className="w-full h-12 rounded-full font-bold text-white tracking-wide shadow-md shadow-purple-200 bg-linear-to-r from-[#4ae2e2] via-[#00A851] to-[#007137] hover:opacity-95 transform active:scale-[0.99] transition-all text-sm uppercase"
             >
               LOGIN
             </button>
